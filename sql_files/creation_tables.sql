@@ -42,10 +42,10 @@ VALUES ('Salesperson','80000', null, '1','333'),
 ('Lawyer', '190000', null, '4', '777'),
 ('Legal Team Lead', '250000', '777','4',null);
 
-INSERT INTO employee (first_name, last_name, roles_id)
-VALUES ('Clint', 'Eastwood', '2'), ('Jackie', 'Chan', '1'), ('Kate', 'Upton', '4'),
-('Tom', 'Holland', '3'), ('Jason', 'Derulo', '5'), ('Scott', 'Stapp', '8'),
-('Chanel', 'Iman', '7'), ('Rob', 'Dyrdek', '6'), ('Daniel', 'Wu', '3')
+INSERT INTO employee (first_name, last_name, roles_id, manager_name)
+VALUES ('Clint', 'Eastwood', '2', " "), ('Jackie', 'Chan', '1', "C. Eastwood"), ('Kate', 'Upton', '4', " "),
+('Tom', 'Holland', '3', "K. Upton"), ('Jason', 'Derulo', '5', "R. Dyrdek"), ('Scott', 'Stapp', '8', " "),
+('Chanel', 'Iman', '7', "S. Stapp"), ('Rob', 'Dyrdek', '6', " "), ('Daniel', 'Wu', '3', "K. Upton")
 
 
 
