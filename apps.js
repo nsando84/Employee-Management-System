@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const Choice = require('inquirer/lib/objects/choice');
 const eView = require('./assets/view')
+const addOpt = require('./assets/add')
 
 startInit = () => {
     inquirer
@@ -27,8 +28,7 @@ startInit = () => {
                     eView()
                     break;
                 case 'Add Menu':
-                    // addEmp()
-                    console.log("Add Employee screen.......")
+                    addOpt()
                     break;
                 case 'Update Menu':
                     // upEmp()
