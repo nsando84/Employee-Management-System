@@ -14,6 +14,7 @@ department_id INT,
 title VARCHAR(30) NOT NULL,
 salary decimal NOT NULL,
 manager_id TINYINT(1),
+reports_to TINYINT(1),
 PRIMARY KEY(id),
 FOREIGN KEY (department_id) REFERENCES department(id)
 );
@@ -23,6 +24,7 @@ id INT AUTO_INCREMENT,
 roles_id INT,
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
+manager VARCHAR(30),
 PRIMARY KEY(id),
 FOREIGN KEY (roles_id) REFERENCES roles(id)
 );
@@ -30,15 +32,15 @@ FOREIGN KEY (roles_id) REFERENCES roles(id)
 INSERT INTO department (dept_name)
 VALUES ('Sales'), ('Engineering'), ('Finance'), ('Legal');
 
-INSERT INTO role (title, salary, manager_id, department_id)
-VALUES ('Salesperson','80000', '0', '1'),
-('Sales Lead', '100000', '1', '1'),
-('Software Engineer', '120000', '0', '2'),
-('Lead Engineer', '150000', '1', '2'),
-('Accountant', '125000', '0', '3'),
-('Head Accountant', '150000', '1', '3'),
-('Lawyer', '190000', '0', '4'),
-('Legal Team Lead', '250000', '1', '4');
+INSERT INTO roles (title, salary, manager_id, department_id, reports_to)
+VALUES ('Salesperson','80000', null, '1','333'),
+('Sales Lead', '100000', '333', '1', null),
+('Software Engineer', '120000', null, '2','444'),
+('Lead Engineer', '150000', '444', '2', null),
+('Accountant', '125000', null, '3','555'),
+('Head Accountant', '150000', '555','3',null),
+('Lawyer', '190000', null, '4', '777'),
+('Legal Team Lead', '250000', '777','4',null);
 
 INSERT INTO employee (first_name, last_name, roles_id)
 VALUES ('Clint', 'Eastwood', '2'), ('Jackie', 'Chan', '1'), ('Kate', 'Upton', '4'),
