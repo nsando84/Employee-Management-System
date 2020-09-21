@@ -24,7 +24,7 @@ id INT AUTO_INCREMENT,
 roles_id INT,
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
-manager VARCHAR(30),
+manager_name VARCHAR(30),
 PRIMARY KEY(id),
 FOREIGN KEY (roles_id) REFERENCES roles(id)
 );
