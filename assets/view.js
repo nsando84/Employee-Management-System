@@ -30,65 +30,28 @@ eView = () => {
         .then(user => {
             switch (user.view) {
                 case 'All Employees':
-                        const queryAll = `SELECT employee.first_name As First, employee.last_name As Last, 
-                        department.dept_name As Dept, roles.title, roles.salary, manager_name As Manager
-                        FROM employee
-                        INNER JOIN roles
-                        on employee.roles_id = roles.id
-                        INNER JOIN department
-                        on roles.department_id = department.id`   
-                    connection.query(queryAll, (err, result) => {
-                    if (err) throw err;
-                    console.table(result)
-                    inquirer 
-                        .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
-                        .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
-                    })
+                    allEmployee();   
                     break;
                 case 'Managers':
-                        const queryMan = `SELECT employee.first_name As First, employee.last_name As Last,
-                        department.dept_name As Dept, roles.title, roles.salary
-                        FROM employee
-                        INNER JOIN roles
-                        on employee.roles_id = roles.id
-                        INNER JOIN department
-                        on roles.department_id = department.id
-                        WHERE manager_name = " "`
-                    connection.query(queryMan, (err, result) => {
-                    if (err) throw err;
-                    console.table(result)
-                    inquirer 
-                        .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
-                        .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
-                    })
+                    allManager();    
                     break;
                 case 'Non-Managers':
-                        const queryNonMan = `SELECT employee.first_name As First, employee.last_name As Last,
-                        department.dept_name As Dept, roles.title, roles.salary, manager_name
-                        FROM employee
-                        INNER JOIN roles
-                        on employee.roles_id = roles.id
-                        INNER JOIN department
-                        on roles.department_id = department.id
-                        JOIN roles m 
-                        on roles.reports_to = m.manager_id`
-                    connection.query(queryNonMan, (err, result) => {
-                    if (err) throw err;
-                    console.table(result)
-                    inquirer 
-                        .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
-                        .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
-                    })
+                    allNonManager();    
                     break;  
                 case 'Employees By Roles':
-                        EmployeesByRoles()
+                    employeesByRoles();
                 break;      
                 case 'Employees By Departments':
-                        EmployeesByDept()
+                    employeesByDept();
                 break;     
-
-
-
+                case 'Company Roles':
+                    companyRoles();
+                break;
+                case 'Company Departments':
+                    companyDept();
+                break;
+            default:
+                startInit()
             }
 
 
@@ -97,8 +60,61 @@ eView = () => {
         })
 }
 
+allEmployee = () => {
+        const queryAll = `SELECT employee.first_name As First, employee.last_name As Last, 
+        department.dept_name As Dept, roles.title, roles.salary, manager_name As Manager
+        FROM employee
+        INNER JOIN roles
+        on employee.roles_id = roles.id
+        INNER JOIN department
+        on roles.department_id = department.id`   
+    connection.query(queryAll, (err, result) => {
+    if (err) throw err;
+    console.table(result)
+    inquirer 
+    .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
+    .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
+    })
+}
 
-EmployeesByRoles = () => {
+allManager = () => {
+        const queryMan = `SELECT employee.first_name As First, employee.last_name As Last,
+        department.dept_name As Dept, roles.title, roles.salary
+        FROM employee
+        INNER JOIN roles
+        on employee.roles_id = roles.id
+        INNER JOIN department
+        on roles.department_id = department.id
+        WHERE manager_name = " "`
+    connection.query(queryMan, (err, result) => {
+    if (err) throw err;
+    console.table(result)
+    inquirer 
+        .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
+        .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
+    })
+}
+
+allNonManager = () => {
+        const queryNonMan = `SELECT employee.first_name As First, employee.last_name As Last,
+        department.dept_name As Dept, roles.title, roles.salary, manager_name
+        FROM employee
+        INNER JOIN roles
+        on employee.roles_id = roles.id
+        INNER JOIN department
+        on roles.department_id = department.id
+        JOIN roles m 
+        on roles.reports_to = m.manager_id`
+    connection.query(queryNonMan, (err, result) => {
+    if (err) throw err;
+    console.table(result)
+    inquirer 
+        .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
+        .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
+    })
+}
+
+employeesByRoles = () => {
     const queryEmpRoles = `SELECT roles.title FROM roles`
     connection.query(queryEmpRoles, (err, result) => {
         if (err) throw error;
@@ -108,7 +124,6 @@ EmployeesByRoles = () => {
         resultArr.sort().forEach(e => newArr.push(e[0]))
         newArr.push(new inquirer.Separator())
         newArr.push('\x1b[33m Go back')
-       
     inquirer  
         .prompt([
             {
@@ -120,7 +135,6 @@ EmployeesByRoles = () => {
                     [...newArr]
             }
         ]).then(user => {
-            console.log(user.role)
             const queryEmpRole = `SELECT employee.first_name As First, employee.last_name As Last, 
             department.dept_name As Dept, roles.title, roles.salary, manager_name As Manager
             FROM employee
@@ -140,7 +154,7 @@ EmployeesByRoles = () => {
     })
 }
 
-EmployeesByDept = () => {
+employeesByDept = () => {
     const queryDeptRoles = `SELECT dept_name FROM department`
     connection.query(queryDeptRoles, (err, result) => {
         if (err) throw error;
@@ -150,7 +164,6 @@ EmployeesByDept = () => {
         resultArr.sort().forEach(e => newArr.push(e[0]))
         newArr.push(new inquirer.Separator())
         newArr.push('\x1b[33m Go back')
-        console.log(newArr)
     inquirer  
         .prompt([
             {
@@ -181,7 +194,34 @@ EmployeesByDept = () => {
     })
 }
 
-  
+companyRoles = () => {
+        const queryCompRole = `SELECT roles.title As Title, department.dept_name As Dept
+        FROM roles INNER JOIN department on roles.department_id = department.id`
+    connection.query(queryCompRole, (err, result) => {
+    if (err) throw err;
+    console.table(result)
+    inquirer 
+        .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
+        .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
+    })
+}
+
+companyDept = () => {
+        const queryCompRole = `SELECT department.dept_name As Dept FROM department`
+    connection.query(queryCompRole, (err, result) => {
+    if (err) throw err;
+    console.table(result)
+    inquirer 
+        .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
+        .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
+})
+}
+
+
+
+
+
+
 
 module.exports = eView
 
