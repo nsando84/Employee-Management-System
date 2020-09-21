@@ -9,6 +9,7 @@ startInit = () => {
                 type: 'list',
                 message: '\x1b[34m Please choice your option',
                 name: 'option',
+                pageSize: 12,
                 choices: [
                     new inquirer.Separator(),
                     'View Menu',
@@ -46,4 +47,3 @@ startInit = () => {
 
 startInit()
 
-// module.exports = connection
