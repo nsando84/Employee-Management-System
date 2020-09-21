@@ -13,8 +13,8 @@ id INT AUTO_INCREMENT,
 department_id INT,
 title VARCHAR(30) NOT NULL,
 salary decimal NOT NULL,
-manager_id TINYINT(1),
-reports_to TINYINT(1),
+manager_id int,
+reports_to int,
 PRIMARY KEY(id),
 FOREIGN KEY (department_id) REFERENCES department(id)
 );
