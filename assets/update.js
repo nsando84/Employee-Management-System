@@ -134,7 +134,7 @@ upDateEmpRole = () => {
                     let newArr = []
                     result.forEach(e => resultArr.unshift(Object.values(e)))
                     resultArr.forEach(e => newArr.push(e[1]))
-                    console.log(newArr)
+                    // console.log(newArr)
                     inquirer
                     .prompt([
                         {
@@ -144,7 +144,31 @@ upDateEmpRole = () => {
                             choices: [...newArr]
                         }
                     ])
+                    .then(user => {
+                        if (user.userPickRole.replace(/\s/g, '') == finalArr[0][4].replace(/\s/g, '')) {
+                            console.log(`\x1b[31m Employee is already a ${finalArr[0][4]}`)
+                            upEmp() 
+                        } else {
+                            const managerCheck = `SELECT employee.id, employee.first_name, employee.last_name
+                            FROM employee WHERE employee.manager_id = ${finalArr[0][1]}`
+                            console.log(managerCheck)
+                            connection.query(managerCheck, (err, result) => {
+                                let resultArr = []
+                                result.forEach(e => resultArr.unshift(Object.values(e)))
+                                console.log(resultArr)
 
+
+
+
+
+                            })
+
+
+
+
+
+                        }
+                    })
                 })
 
                 

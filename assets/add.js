@@ -80,8 +80,7 @@ addEmployee = () => {
                         ])
         .then(job => {
             let jobRole = resultArr.filter(e => job.role == e[0])
-            
-            if (jobRole[0][2] == null) {
+            if (jobRole[0][2] == ' ') {
                 const queryPickManager = `SELECT employee.id, CONCAT (employee.first_name, " ", employee.last_name) As Manager
                 FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department on roles.department_id
                 = department.id LEFT JOIN employee m on employee.manager_id = m.id WHERE roles.manager_id <> " " AND
