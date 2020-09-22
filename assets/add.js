@@ -56,10 +56,10 @@ addEmployee = () => {
                         }
                     ])
         .then(userLast => {
-                const queryJobRoles = `SELECT roles.title, manager_id, department.dept_name
+                
+                const queryJobRoles = `SELECT roles.title, roles.id, manager_id, department.dept_name
                 FROM roles INNER JOIN department on roles.department_id = department.id`
                 connection.query(queryJobRoles, (err, result) => {
-                    console.log(result)
                     if (err) throw error;
                         let resultArr = []
                         result.forEach(e => resultArr.unshift(Object.values(e)))
@@ -80,37 +80,59 @@ addEmployee = () => {
                         ])
         .then(job => {
             let jobRole = resultArr.filter(e => job.role == e[0])
-            if (jobRole[0][1] == null) {
-                const queryPickManager = `SELECT employee.first_name, employee.last_name
-                FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
-                on roles.department_id = department.id WHERE manager_name = " " AND department.dept_name = "${jobRole[0][2]}"`
+            
+            if (jobRole[0][2] == null) {
+                const queryPickManager = `SELECT employee.id, CONCAT (employee.first_name, " ", employee.last_name) As Manager
+                FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department on roles.department_id
+                = department.id LEFT JOIN employee m on employee.manager_id = m.id WHERE roles.manager_id <> " " AND
+                department.dept_name = "${jobRole[0][3]}"`
                 connection.query(queryPickManager, (err, result) => {
                     if (err) throw err;
-                    let managerArr = []
-                    result.forEach(e => managerArr.unshift(Object.values(e)))
-                    console.log(managerArr[0])
-
-
-
-                    
+                    let resultArr = []
+                    result.forEach(e => resultArr.push(e))
+                    let newArr = []
+                    resultArr.forEach(e => newArr.push(e.Manager))
+                    inquirer
+                    .prompt([ 
+                        {   
+                            type: 'list',
+                            message: 'pick employee manager',
+                            name: "manager",
+                            choices: [...newArr]
+                        }
+                    ])
+                    .then(user => {
+                        let manId = resultArr.find(e => e.Manager == user.manager)
+                        connection.query('INSERT INTO employee SET ?',
+                            {
+                            first_name: userFirst.firstName,
+                            last_name: userLast.lastName,
+                            roles_id: jobRole[0][1],
+                            manager_id: manId.id
+                            }, (err) => {
+                                if (err) throw err
+                                console.log("employee created")
+                                startInit()
+                        })
+                    })
                 })
-
-
-
-
             } else {
-                console.log("you a manager")
+                connection.query('INSERT INTO employee SET ?',
+                    {
+                    first_name: userFirst.firstName,
+                    last_name: userLast.lastName,
+                    roles_id: jobRole[0][1],
+                    manager_id: null
+                    }, (err) => {
+                        if (err) throw err
+                        console.log("employee created")
+                        startInit()
+                })        
             }
-
-
         })
         })
         })
-
-
-
-})
-
+        })
 }
 
 

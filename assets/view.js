@@ -81,7 +81,7 @@ allManager = () => {
         CONCAT (m.first_name, " ", m.last_name) As Manager
         FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
         on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id
-        WHERE employee.manager_id = " "`
+        WHERE roles.manager_id <> " "`
     connection.query(queryMan, (err, result) => {
     if (err) throw err;
     console.table(result)
