@@ -270,4 +270,39 @@ addRole = () => {
 }; 
 
 
+addDept = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                message: 'Name of the new department:',
+                name: 'newDept',
+            }
+        ])
+        .then(newDept => {
+            const queryCompRole = `SELECT department.dept_name As Dept FROM department`
+            connection.query(queryCompRole, (err, result) => {
+            if (err) throw err;
+            let resultArr = []
+            let newArr = []
+            result.forEach(e => resultArr.unshift(Object.values(e)))
+            resultArr.sort().forEach(e => newArr.push(e[0]))
+            if (newDept.newDept.length < 3 || newArr.some(e => e.toUpperCase() == newDept.newDept.toUpperCase())) {
+                console.log("dept name not long enough or already exists. Please start over.")
+                addRole()
+            } else {
+                connection.query('INSERT INTO department SET ?',
+                {
+                    dept_name: newDept.newDept
+                }, (err) => {
+                if (err) throw err
+                console.log("role created")
+                startInit()
+            })  
+            }
+        })
+        })
+};
+
+
 module.exports = addOpt
