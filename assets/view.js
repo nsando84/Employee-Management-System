@@ -118,7 +118,6 @@ employeesByRoles = () => {
                 type: 'list',
                 message: '\x1b[34m View employees by role',
                 name: 'role',
-                pageSize: 12,
                 choices: 
                     [...newArr]
             }

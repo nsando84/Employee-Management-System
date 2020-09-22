@@ -151,12 +151,18 @@ upDateEmpRole = () => {
                         } else {
                             const managerCheck = `SELECT employee.id, employee.first_name, employee.last_name
                             FROM employee WHERE employee.manager_id = ${finalArr[0][1]}`
-                            console.log(managerCheck)
                             connection.query(managerCheck, (err, result) => {
                                 let resultArr = []
                                 result.forEach(e => resultArr.unshift(Object.values(e)))
-                                console.log(resultArr)
-
+                                for (let i = 0; i < resultArr.length; i++) {
+                                    connection.query(`UPDATE employee SET manager_id = ' ' WHERE employee.id = ${resultArr[i][0]}`,
+                                    (err, result) => {
+                                        if (err) throw err;
+                                    })
+                                }
+                                
+                                console.log('\x1b[31m Assign a manager to employee(s) altered.')
+                                upEmp()
 
 
 
