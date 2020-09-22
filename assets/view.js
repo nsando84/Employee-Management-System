@@ -165,13 +165,11 @@ employeesByDept = () => {
                     [...newArr]
             }
         ]).then(user => {
-            const queryEmpRole = `SELECT employee.first_name As First, employee.last_name As Last, 
-            department.dept_name As Dept, roles.title, roles.salary, manager_name As Manager
-            FROM employee
-            INNER JOIN roles
-            on employee.roles_id = roles.id
-            INNER JOIN department
-            on roles.department_id = department.id
+            const queryEmpRole = `SELECT employee.first_name As First, employee.last_name As Last,
+            roles.title As Title, roles.salary As Salary ,department.dept_name As Dept,
+            CONCAT (m.first_name, " ", m.last_name) As Manager
+            FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
+            on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id
             WHERE department.dept_name = "${user.dept}"`
         connection.query(queryEmpRole, (err, result) => {
         if (err) throw err;
