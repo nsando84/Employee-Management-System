@@ -61,13 +61,11 @@ eView = () => {
 }
 
 allEmployee = () => {
-        const queryAll = `SELECT employee.first_name As First, employee.last_name As Last, 
-        department.dept_name As Dept, roles.title, roles.salary, manager_name As Manager
-        FROM employee
-        INNER JOIN roles
-        on employee.roles_id = roles.id
-        INNER JOIN department
-        on roles.department_id = department.id`   
+        const queryAll = `SELECT employee.first_name As First, employee.last_name As Last,
+        roles.title As Title, roles.salary As Salary ,department.dept_name As Dept,
+        CONCAT (m.first_name, " ", m.last_name) As Manager
+        FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
+        on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id` 
     connection.query(queryAll, (err, result) => {
     if (err) throw err;
     console.table(result)
@@ -79,13 +77,11 @@ allEmployee = () => {
 
 allManager = () => {
         const queryMan = `SELECT employee.first_name As First, employee.last_name As Last,
-        department.dept_name As Dept, roles.title, roles.salary
-        FROM employee
-        INNER JOIN roles
-        on employee.roles_id = roles.id
-        INNER JOIN department
-        on roles.department_id = department.id
-        WHERE manager_name = " "`
+        roles.title As Title, roles.salary As Salary ,department.dept_name As Dept,
+        CONCAT (m.first_name, " ", m.last_name) As Manager
+        FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
+        on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id
+        WHERE employee.manager_id = " "`
     connection.query(queryMan, (err, result) => {
     if (err) throw err;
     console.table(result)
@@ -97,14 +93,10 @@ allManager = () => {
 
 allNonManager = () => {
         const queryNonMan = `SELECT employee.first_name As First, employee.last_name As Last,
-        department.dept_name As Dept, roles.title, roles.salary, manager_name
-        FROM employee
-        INNER JOIN roles
-        on employee.roles_id = roles.id
-        INNER JOIN department
-        on roles.department_id = department.id
-        JOIN roles m 
-        on roles.reports_to = m.manager_id`
+        roles.title As Title, roles.salary As Salary ,department.dept_name As Dept,
+        CONCAT (m.first_name, " ", m.last_name) As Manager
+        FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
+        on roles.department_id = department.id JOIN employee m on employee.manager_id = m.id`
     connection.query(queryNonMan, (err, result) => {
     if (err) throw err;
     console.table(result)
@@ -135,13 +127,11 @@ employeesByRoles = () => {
                     [...newArr]
             }
         ]).then(user => {
-            const queryEmpRole = `SELECT employee.first_name As First, employee.last_name As Last, 
-            department.dept_name As Dept, roles.title, roles.salary, manager_name As Manager
-            FROM employee
-            INNER JOIN roles
-            on employee.roles_id = roles.id
-            INNER JOIN department
-            on roles.department_id = department.id
+            const queryEmpRole = `SELECT employee.first_name As First, employee.last_name As Last,
+            roles.title As Title, roles.salary As Salary ,department.dept_name As Dept,
+            CONCAT (m.first_name, " ", m.last_name) As Manager
+            FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
+            on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id
             WHERE roles.title = "${user.role}"`
         connection.query(queryEmpRole, (err, result) => {
         if (err) throw err;

@@ -11,8 +11,8 @@ PRIMARY KEY(id)
 CREATE TABLE roles(
 id INT AUTO_INCREMENT,
 department_id INT,
-title VARCHAR(30) NOT NULL,
-salary decimal NOT NULL,
+Title VARCHAR(30) NOT NULL,
+Salary decimal NOT NULL,
 manager_id int,
 reports_to int,
 PRIMARY KEY(id),
@@ -24,7 +24,7 @@ id INT AUTO_INCREMENT,
 roles_id INT,
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
-manager_name VARCHAR(30),
+manager_id VARCHAR(30),
 PRIMARY KEY(id),
 FOREIGN KEY (roles_id) REFERENCES roles(id)
 );
@@ -42,10 +42,10 @@ VALUES ('Salesperson','80000', null, '1','333'),
 ('Lawyer', '190000', null, '4', '777'),
 ('Legal Team Lead', '250000', '777','4',null);
 
-INSERT INTO employee (first_name, last_name, roles_id, manager_name)
-VALUES ('Clint', 'Eastwood', '2', " "), ('Jackie', 'Chan', '1', "C. Eastwood"), ('Kate', 'Upton', '4', " "),
-('Tom', 'Holland', '3', "K. Upton"), ('Jason', 'Derulo', '5', "R. Dyrdek"), ('Scott', 'Stapp', '8', " "),
-('Chanel', 'Iman', '7', "S. Stapp"), ('Rob', 'Dyrdek', '6', " "), ('Daniel', 'Wu', '3', "K. Upton")
+INSERT INTO employee (first_name, last_name, roles_id, manager_id)
+VALUES ('Clint', 'Eastwood', '2', " "), ('Jackie', 'Chan', '1', "1"), ('Kate', 'Upton', '4', " "),
+('Tom', 'Holland', '3', "3"), ('Jason', 'Derulo', '5', "8"), ('Scott', 'Stapp', '8', " "),
+('Chanel', 'Iman', '7', "6"), ('Rob', 'Dyrdek', '6', " "), ('Daniel', 'Wu', '3', "3")
 
 
 
