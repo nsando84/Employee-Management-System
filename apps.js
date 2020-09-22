@@ -16,7 +16,7 @@ startInit = () => {
                     new inquirer.Separator(),
                     'View Menu',
                     'Add Menu',
-                    'Update Menu',
+                    'Update Employee',
                     'Delete Menu',
                     new inquirer.Separator(),
                     '\x1b[33m Exit'
@@ -31,7 +31,7 @@ startInit = () => {
                 case 'Add Menu':
                     addOpt()
                     break;
-                case 'Update Menu':
+                case 'Update Employee':
                     updateOpt()
                     break;
                 case 'Delete Menu':
