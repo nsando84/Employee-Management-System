@@ -122,7 +122,7 @@ addEmployee = () => {
                     first_name: userFirst.firstName,
                     last_name: userLast.lastName,
                     roles_id: jobRole[0][1],
-                    manager_id: null
+                    manager_id: " "
                     }, (err) => {
                         if (err) throw err
                         console.log("employee created")
@@ -134,6 +134,140 @@ addEmployee = () => {
         })
         })
 }
+
+
+addRole = () => {
+    const queryCompRole = `SELECT department.dept_name, department.id As Dept FROM department`
+    connection.query(queryCompRole, (err, result) => {
+    if (err) throw err;
+    let resultArr = []
+    let newArr = []
+    result.forEach(e => resultArr.unshift(Object.values(e)))
+    resultArr.sort().forEach(e => newArr.push(e[0]))
+    inquirer
+        .prompt([ 
+            {
+            type: 'list',
+            message: 'What department will role belong too?',
+            name: 'depRole',
+            choices: [...newArr]
+            }
+        ])
+        .then(user => {
+            let roleNum = resultArr.filter(e => e.includes(user.depRole))
+            inquirer
+                .prompt([
+                    {
+                        type: 'input',
+                        message: 'Name of the position:',
+                        name: 'posName'
+                    }
+                ])
+                .then(userPos =>{
+                    inquirer
+                        .prompt([
+                            {
+                                type: 'input',
+                                message: 'Salary of new position:',
+                                name: 'posSal'
+                            }
+                        ])
+                        .then(userSal => {
+                            inquirer
+                                .prompt([
+                                    {
+                                        type: 'list',
+                                        message: 'New role a leadership position?',
+                                        name: 'posLed',
+                                        choices: [
+                                            'Yes',
+                                            'No'
+                                        ]
+                                    }
+                                ])
+                                .then(userLed => {
+                                    if (userLed.posLed == 'Yes') {
+                                    const queryCompRole = `SELECT roles.manager_id
+                                    FROM roles INNER JOIN department on roles.department_id = department.id`
+                                    connection.query(queryCompRole, (err, result) => {
+                                    if (err) throw err;
+                                    let resultArr = []
+                                    let newArr = []
+                                    result.forEach(e => resultArr.unshift(Object.values(e)))
+                                    resultArr.sort().forEach(e => newArr.push(e[0]))    
+                                        inquirer
+                                            .prompt([
+                                                {
+                                                    type: 'input',
+                                                    message: 'Please enter in a manager number',
+                                                    name: 'userNum'
+                                                }
+                                            ])
+                                            .then(userNum => {
+                                                if (newArr.some(e => parseFloat(e) == userNum.userNum) || userNum.userNum.length < 2 || isNaN(userNum.userNum)) {
+                                                    console.log('Number already exists, is too short, or not a number. Please start over.')
+                                                    addRole()
+                                                } else {
+                                                    connection.query('INSERT INTO roles SET ?',
+                                                        {
+                                                        title: userPos.posName,
+                                                        salary: userSal.posSal,
+                                                        manager_id: userNum.userNum,
+                                                        department_id: roleNum[0][1],
+                                                        reports_to: null
+                                                        }, (err) => {
+                                                            if (err) throw err
+                                                            console.log("role created")
+                                                            startInit()
+                                                    })  
+                                                }
+                                                
+                                                
+                                            })
+                                })
+                            } else {
+                                const queryLeader = `SELECT roles.title, roles.manager_id, department.dept_name As Dept
+                                FROM roles INNER JOIN department on roles.department_id = department.id
+                                WHERE roles.manager_id <> " " AND department.id = "${roleNum[0][1]}"`
+                                connection.query(queryLeader, (err, result) => {
+                                if (err) throw err;
+                                    let resultArr = []
+                                    let newArr = []
+                                    result.forEach(e => resultArr.unshift(Object.values(e)))
+                                    resultArr.sort().forEach(e => newArr.push(e[0]))    
+                                    inquirer
+                                        .prompt([
+                                            {   
+                                                type: 'list',
+                                                message: 'What position is superior to new role?',
+                                                name: 'userSupp',
+                                                choices: [...newArr]
+                                            }
+                                        ])
+                                        .then(userSupp => {
+                                            let superNum = []
+                                            resultArr.forEach(e => e[0] == userSupp.userSupp ? superNum.push(e[1]) : " ")
+                                            connection.query('INSERT INTO roles SET ?',
+                                                {
+                                                    title: userPos.posName,
+                                                    salary: userSal.posSal,
+                                                    manager_id: " ",
+                                                    department_id: roleNum[0][1],
+                                                    reports_to: superNum[0]
+                                                    }, (err) => {
+                                                        if (err) throw err
+                                                        console.log("role created")
+                                                        startInit()
+                                                    })  
+                                        })
+                                })
+                            }
+                        })
+                })
+                })
+        })
+    })    
+}; 
 
 
 module.exports = addOpt

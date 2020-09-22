@@ -15,7 +15,7 @@ on roles.department_id = department.id
 LEFT JOIN employee m
 on employee.manager_id = m.id
 WHERE
-employee.manager_id = " "
+roles.manager_id <> " "
 	
 
 
