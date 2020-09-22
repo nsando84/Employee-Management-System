@@ -53,11 +53,7 @@ eView = () => {
             default:
                 startInit()
             }
-
-
-
-
-        })
+       })
 }
 
 allEmployee = () => {

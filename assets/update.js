@@ -26,7 +26,7 @@ upEmp = () => {
                     upDateEmp();
                     break;
                 case 'Update employee role':
-                    upDateEmp();
+                    upDateEmpRole();
                     break;
                 default:
                     startInit()
@@ -96,12 +96,60 @@ upDateEmp = () => {
                 })
 
             })
-        
-        
-    
-    
-    
-    
+    })
+}
+
+upDateEmpRole = () => {
+    const queryUpdateRole = `SELECT CONCAT (employee.first_name, " ", employee.last_name) As Name, employee.id,
+    employee.manager_id, department.dept_name, roles.title, roles.salary,
+	CONCAT (m.first_name, " ", m.last_name) As Manager FROM employee INNER JOIN roles
+    on employee.roles_id = roles.id INNER JOIN department on roles.department_id = department.id
+    LEFT JOIN employee m on employee.manager_id = m.id`
+    connection.query(queryUpdateRole, (err, result) =>{
+        if (err) throw err;
+        let resultArr = []
+        let newArr = []
+        result.forEach(e => resultArr.unshift(Object.values(e)))
+        resultArr.forEach(e => newArr.push(e[0]+ " - " + "Title: "+e[4]+ " - "+ "Dept: " +e[3]+ " - "+ "Current Manager: "+e[6]))
+        // console.log(newArr)
+
+        inquirer
+            .prompt([
+                {
+                    type: 'list',
+                    message: 'Pick an employee:',
+                    name: 'userPick',
+                    choices: [...newArr]
+                }
+            ])
+            .then(user => {
+                let findRole = user.userPick.split("-")
+                let finalArr = resultArr.filter(e=> e[0].replace(/\s/g, '') == findRole[0].replace(/\s/g, ''))
+                // console.log(finalArr)
+
+                const queryEmpRoles = `SELECT roles.id, roles.title FROM roles`
+                connection.query(queryEmpRoles, (err, result) => {
+                    // console.log(result)
+                    let resultArr = []
+                    let newArr = []
+                    result.forEach(e => resultArr.unshift(Object.values(e)))
+                    resultArr.forEach(e => newArr.push(e[1]))
+                    console.log(newArr)
+                    inquirer
+                    .prompt([
+                        {
+                            type: 'list',
+                            message: `Pick a new role for ${finalArr[0][0]}`,
+                            name: 'userPickRole',
+                            choices: [...newArr]
+                        }
+                    ])
+
+                })
+
+                
+            })
+
     })
 
 
@@ -110,6 +158,5 @@ upDateEmp = () => {
 
 
 }
-
 
 module.exports = upEmp
