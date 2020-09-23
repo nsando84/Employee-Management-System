@@ -37,7 +37,7 @@ upEmp = () => {
 
 upDateEmp = () => {
     const queryUpdateEmployee = `SELECT employee.id, CONCAT (employee.first_name, " ", employee.last_name) As Name,
-    roles.title, employee.manager_id, CONCAT (m.first_name," ", m.last_name) As Manager, department.dept_name
+    roles.title, employee.manager_id, CONCAT (m.first_name," ", m.last_name) As Manager, department.dept_name, roles.manager_id As Man
     FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
     on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id`
     connection.query(queryUpdateEmployee, (err, result) => {
@@ -46,19 +46,23 @@ upDateEmp = () => {
         result.forEach(e => resultArr.unshift(Object.values(e)))
         let newArr = []
         resultArr.sort().forEach(e => newArr.push(e[1]+ " - " + "Title: "+e[2]+ " - "+" Current Manager: "+e[4])) 
+        newArr.push(new inquirer.Separator())
+        newArr.push('\x1b[33m Go back')
         inquirer
             .prompt([
                 {
                     type: 'list',
                     message: 'Pick employee to update',
+                    pageSize: 12,
                     name: 'empName',
                     choices: [...newArr]
                 }
             ])
             .then(user => {
+                if (user.empName == '\x1b[33m Go back') { upEmp() } else {
                 let findDept = user.empName.split("-")
                 let finalArr = resultArr.filter(e=> e[1].replace(/\s/g, '') == findDept[0].replace(/\s/g, ''))
-                const queryUpdateEmployeeMan = `SELECT employee.id, CONCAT (employee.first_name, " ", employee.last_name) As Manager
+                const queryUpdateEmployeeMan = `SELECT employee.id, CONCAT (employee.first_name, " ", employee.last_name) As Manager, roles.manager_id
                 FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department on roles.department_id = department.id
                 LEFT JOIN employee m on employee.manager_id = m.id WHERE employee.manager_id = " " AND department.dept_name = "${finalArr[0][5]}"`
                 connection.query(queryUpdateEmployeeMan, (err, result) => {
@@ -67,7 +71,8 @@ upDateEmp = () => {
                     let newArr = []
                     result.forEach(e => resultArr.unshift(Object.values(e)))
                     resultArr.forEach(e => newArr.push(e[1]))
-                    
+                    newArr.push(new inquirer.Separator())
+                    newArr.push('\x1b[33m Go back')
                     inquirer
                         .prompt([
                             {
@@ -78,8 +83,10 @@ upDateEmp = () => {
                             }
                          ])
                          .then(user => {
-                                if (finalArr[0][4] == user.managerPick || finalArr[0][1] == user.managerPick) {
-                                console.log("\x1b[31m Manager is already employee's manager")
+                            if (user.managerPick == '\x1b[33m Go back') { upDateEmp() 
+                            } else if (finalArr[0][4] == user.managerPick || finalArr[0][1] == user.managerPick || 
+                                    finalArr[0][6] == resultArr[0][2]) {
+                                console.log("\x1b[31m Manager changed not within guidelines. Please start over.")
                                 upEmp() 
                             } else {
                                 let finalMan = resultArr.filter(e=> e[1].replace(/\s/g, '') == user.managerPick.replace(/\s/g, ''))
@@ -95,7 +102,7 @@ upDateEmp = () => {
                          })
                 })
 
-            })
+            }})
     })
 }
 
@@ -149,22 +156,23 @@ upDateEmpRole = () => {
                             console.log(`\x1b[31m Employee is already a ${finalArr[0][4]}`)
                             upEmp() 
                         } else if (Number(finalArr[0][2])) {
-                            console.log(finalArr[0])
+                            // console.log(finalArr[0])
                             const managerCheck = `SELECT employee.id, employee.first_name, employee.last_name
                             FROM employee WHERE employee.manager_id = ${finalArr[0][1]}`
                             connection.query(managerCheck, (err, result) => {
                                 let resultArr = []
-                
                                 result.forEach(e => resultArr.unshift(Object.values(e)))
+                                // console.log(resultArr)
                                 for (let i = 0; i < resultArr.length; i++) {
                                     connection.query(`UPDATE employee SET manager_id = ' ' WHERE employee.id = ${resultArr[i][0]}`,
                                     (err, result) => {
                                         if (err) throw err;
                                     })
                                 }
-                                
                                 console.log('\x1b[31m Assign a manager to employee(s) altered.')
                                 upEmp()
+                            
+                            
 
 
 

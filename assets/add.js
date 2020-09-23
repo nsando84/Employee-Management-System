@@ -204,7 +204,7 @@ addRole = () => {
                                             ])
                                             .then(userNum => {
                                                 if (newArr.some(e => parseFloat(e) == userNum.userNum) || userNum.userNum.length < 2 || isNaN(userNum.userNum)) {
-                                                    console.log('Number already exists, is too short, or not a number. Please start over.')
+                                                    console.log('\x1b[31m Number already exists, too short, or not a number. Please start over.')
                                                     addRole()
                                                 } else {
                                                     connection.query('INSERT INTO roles SET ?',
