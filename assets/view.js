@@ -92,7 +92,8 @@ allNonManager = () => {
         roles.title As Title, roles.salary As Salary ,department.dept_name As Dept,
         CONCAT (m.first_name, " ", m.last_name) As Manager
         FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
-        on roles.department_id = department.id JOIN employee m on employee.manager_id = m.id`
+        on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id
+        WHERE roles.manager_id = " "`
     connection.query(queryNonMan, (err, result) => {
     if (err) throw err;
     clog.table(result)

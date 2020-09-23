@@ -93,7 +93,6 @@ upDateEmp = () => {
                             }
                              
                          })
-
                 })
 
             })
@@ -102,7 +101,7 @@ upDateEmp = () => {
 
 upDateEmpRole = () => {
     const queryUpdateRole = `SELECT CONCAT (employee.first_name, " ", employee.last_name) As Name, employee.id,
-    employee.manager_id, department.dept_name, roles.title, roles.salary,
+    employee.manager_id, department.dept_name, roles.title, roles.salary, roles.manager_id,
 	CONCAT (m.first_name, " ", m.last_name) As Manager FROM employee INNER JOIN roles
     on employee.roles_id = roles.id INNER JOIN department on roles.department_id = department.id
     LEFT JOIN employee m on employee.manager_id = m.id`
@@ -149,11 +148,13 @@ upDateEmpRole = () => {
                         if (user.userPickRole.replace(/\s/g, '') == finalArr[0][4].replace(/\s/g, '')) {
                             console.log(`\x1b[31m Employee is already a ${finalArr[0][4]}`)
                             upEmp() 
-                        } else {
+                        } else if (Number(finalArr[0][2])) {
+                            console.log(finalArr[0])
                             const managerCheck = `SELECT employee.id, employee.first_name, employee.last_name
                             FROM employee WHERE employee.manager_id = ${finalArr[0][1]}`
                             connection.query(managerCheck, (err, result) => {
                                 let resultArr = []
+                
                                 result.forEach(e => resultArr.unshift(Object.values(e)))
                                 for (let i = 0; i < resultArr.length; i++) {
                                     connection.query(`UPDATE employee SET manager_id = ' ' WHERE employee.id = ${resultArr[i][0]}`,
@@ -169,8 +170,8 @@ upDateEmpRole = () => {
 
 
                             })
-
-
+                        } else {   
+                            console.log('non manager')
 
 
 
