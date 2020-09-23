@@ -143,16 +143,20 @@ addRole = () => {
     let newArr = []
     result.forEach(e => resultArr.unshift(Object.values(e)))
     resultArr.sort().forEach(e => newArr.push(e[0]))
+    newArr.push(new inquirer.Separator())
+    newArr.push('\x1b[33m Go back')    
     inquirer
         .prompt([ 
             {
             type: 'list',
             message: 'What department will role belong too?',
             name: 'depRole',
+            pageSize: 12,
             choices: [...newArr]
             }
         ])
         .then(user => {
+            if (user.depRole == '\x1b[33m Go back') { addOpt() } else {
             let roleNum = resultArr.filter(e => e.includes(user.depRole))
             inquirer
                 .prompt([
@@ -233,7 +237,7 @@ addRole = () => {
                                     let resultArr = []
                                     let newArr = []
                                     result.forEach(e => resultArr.unshift(Object.values(e)))
-                                    resultArr.sort().forEach(e => newArr.push(e[0]))    
+                                    resultArr.sort().forEach(e => newArr.push(e[0]))
                                     inquirer
                                         .prompt([
                                             {   
@@ -264,7 +268,7 @@ addRole = () => {
                         })
                 })
                 })
-        })
+        }})
     })    
 }; 
 
