@@ -3,6 +3,7 @@ const Choice = require('inquirer/lib/objects/choice');
 const eView = require('./assets/view')
 const addOpt = require('./assets/add')
 const updateOpt = require('./assets/update')
+const delEmp = require('./assets/delete')
 
 startInit = () => {
     inquirer
@@ -35,8 +36,7 @@ startInit = () => {
                     updateOpt()
                     break;
                 case 'Delete Menu':
-                    // delEmp()
-                    console.log("Delete Employee screen..........")
+                    delEmp()
                     break;  
                 default:
                     console.log("exit......")
