@@ -1,6 +1,7 @@
 const inquirer = require('inquirer')
 const myConn = require('../connect')
 const connection = myConn.myConn()
+const validateIt = require('./assets/validate')
 
 addOpt = () => {
     inquirer
@@ -43,7 +44,8 @@ addEmployee = () => {
             {
                 type: 'input',
                 message: 'Enter first name:',
-                name: 'firstName'
+                name: 'firstName',
+                validate: validateIt.validateText
             }
         ])
         .then(userFirst => {
@@ -52,7 +54,8 @@ addEmployee = () => {
                         {
                             type: 'input',
                             message: `Enter last name:`,
-                            name: 'lastName'
+                            name: 'lastName',
+                            validate: validateIt.validateText
                         }
                     ])
         .then(userLast => {
@@ -79,8 +82,9 @@ addEmployee = () => {
                         }
                         ])
         .then(job => {
-            let jobRole = resultArr.filter(e => job.role == e[0])
-            if (jobRole[0][2] == ' ') {
+                let jobRole = resultArr.filter(e => job.role == e[0])
+                if (job.role == '\x1b[33m Go back') { addOpt()
+                } else if (jobRole[0][2] == ' ') {
                 const queryPickManager = `SELECT employee.id, CONCAT (employee.first_name, " ", employee.last_name) As Manager
                 FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department on roles.department_id
                 = department.id LEFT JOIN employee m on employee.manager_id = m.id WHERE roles.manager_id <> " " AND
@@ -110,7 +114,7 @@ addEmployee = () => {
                             manager_id: manId.id
                             }, (err) => {
                                 if (err) throw err
-                                console.log("employee created")
+                                console.log("\x1b[35m Employee created")
                                 startInit()
                         })
                     })
@@ -124,7 +128,7 @@ addEmployee = () => {
                     manager_id: " "
                     }, (err) => {
                         if (err) throw err
-                        console.log("employee created")
+                        console.log("\x1b[35m Employee created")
                         startInit()
                 })        
             }
@@ -163,7 +167,8 @@ addRole = () => {
                     {
                         type: 'input',
                         message: 'Name of the position:',
-                        name: 'posName'
+                        name: 'posName',
+                        validate: validateIt.validateText
                     }
                 ])
                 .then(userPos =>{
@@ -172,7 +177,8 @@ addRole = () => {
                             {
                                 type: 'input',
                                 message: 'Salary of new position:',
-                                name: 'posSal'
+                                name: 'posSal',
+                                validate: validateIt.validateNum
                             }
                         ])
                         .then(userSal => {
@@ -220,7 +226,7 @@ addRole = () => {
                                                         reports_to: null
                                                         }, (err) => {
                                                             if (err) throw err
-                                                            console.log("role created")
+                                                            console.log("\x1b[35m Role created")
                                                             startInit()
                                                     })  
                                                 }
@@ -242,7 +248,7 @@ addRole = () => {
                                         .prompt([
                                             {   
                                                 type: 'list',
-                                                message: 'What position is superior to new role?',
+                                                message: 'What position manages new role?',
                                                 name: 'userSupp',
                                                 choices: [...newArr]
                                             }
@@ -259,7 +265,7 @@ addRole = () => {
                                                     reports_to: superNum[0]
                                                     }, (err) => {
                                                         if (err) throw err
-                                                        console.log("role created")
+                                                        console.log("\x1b[35m Role created")
                                                         startInit()
                                                     })  
                                         })
@@ -280,6 +286,7 @@ addDept = () => {
                 type: 'input',
                 message: 'Name of the new department:',
                 name: 'newDept',
+                validate: validateIt.validateText
             }
         ])
         .then(newDept => {
