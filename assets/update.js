@@ -39,7 +39,7 @@ upDateEmp = () => {
     const queryUpdateEmployee = `SELECT employee.id, CONCAT (employee.first_name, " ", employee.last_name) As Name,
     roles.title, employee.manager_id, CONCAT (m.first_name," ", m.last_name) As Manager, department.dept_name
     FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
-    on roles.department_id = department.id JOIN employee m on employee.manager_id = m.id`
+    on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id`
     connection.query(queryUpdateEmployee, (err, result) => {
         if (err) throw err;
         let resultArr = []
@@ -67,6 +67,7 @@ upDateEmp = () => {
                     let newArr = []
                     result.forEach(e => resultArr.unshift(Object.values(e)))
                     resultArr.forEach(e => newArr.push(e[1]))
+                    
                     inquirer
                         .prompt([
                             {
@@ -77,7 +78,7 @@ upDateEmp = () => {
                             }
                          ])
                          .then(user => {
-                            if (finalArr[0][4].replace(/\s/g, '') == user.managerPick.replace(/\s/g, '')) {
+                                if (finalArr[0][4] == user.managerPick || finalArr[0][1] == user.managerPick) {
                                 console.log("\x1b[31m Manager is already employee's manager")
                                 upEmp() 
                             } else {

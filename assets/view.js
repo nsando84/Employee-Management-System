@@ -2,7 +2,7 @@ const inquirer = require('inquirer')
 const myConn = require('../connect')
 const connection = myConn.myConn()
 const cTable = require('console.table')
-
+var clog = require('c-log')
 
 eView = () => {
     inquirer
@@ -64,7 +64,7 @@ allEmployee = () => {
         on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id` 
     connection.query(queryAll, (err, result) => {
     if (err) throw err;
-    console.table(result)
+    clog.table(result)
     inquirer 
     .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
     .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
@@ -80,7 +80,7 @@ allManager = () => {
         WHERE roles.manager_id <> " "`
     connection.query(queryMan, (err, result) => {
     if (err) throw err;
-    console.table(result)
+    clog.table(result)
     inquirer 
         .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
         .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
@@ -95,7 +95,7 @@ allNonManager = () => {
         on roles.department_id = department.id JOIN employee m on employee.manager_id = m.id`
     connection.query(queryNonMan, (err, result) => {
     if (err) throw err;
-    console.table(result)
+    clog.table(result)
     inquirer 
         .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
         .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
@@ -130,7 +130,7 @@ employeesByRoles = () => {
             WHERE roles.title = "${user.role}"`
         connection.query(queryEmpRole, (err, result) => {
         if (err) throw err;
-        console.table(result)
+        clog.table(result)
         inquirer 
             .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
             .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
@@ -168,7 +168,7 @@ employeesByDept = () => {
             WHERE department.dept_name = "${user.dept}"`
         connection.query(queryEmpRole, (err, result) => {
         if (err) throw err;
-        console.table(result)
+        clog.table(result)
         inquirer 
             .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
             .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
@@ -182,7 +182,7 @@ companyRoles = () => {
         FROM roles INNER JOIN department on roles.department_id = department.id`
     connection.query(queryCompRole, (err, result) => {
     if (err) throw err;
-    console.table(result)
+    clog.table(result)
     inquirer 
         .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
         .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
@@ -193,7 +193,7 @@ companyDept = () => {
         const queryCompRole = `SELECT department.dept_name As Dept FROM department`
     connection.query(queryCompRole, (err, result) => {
     if (err) throw err;
-    console.table(result)
+    clog.table(result)
     inquirer 
         .prompt([{type: 'list', message: '\x1b[34m Complete', choices: ['\x1b[33m Go back'], name: 'back'}])
         .then(user => user.back == '\x1b[33m Go back' ? eView() : "")
