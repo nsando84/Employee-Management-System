@@ -54,8 +54,9 @@
 
 ### **Usage**
 
-#### This application is for employers to track employees, roles, and departments.
+#### This application is for employers to manage employees, roles, and departments.
 
+![Screen Shot 2020-09-24 at 2 42 02 PM](https://user-images.githubusercontent.com/67135603/94203397-2e059280-fe74-11ea-94a6-eba2ffdcdbc8.png)
 
 
 
