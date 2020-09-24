@@ -4,6 +4,18 @@ const eView = require('./assets/view')
 const addOpt = require('./assets/add')
 const updateOpt = require('./assets/update')
 const delEmp = require('./assets/delete')
+const figlet = require('figlet')
+
+
+
+   
+    
+    
+   
+
+
+
+
 
 startInit = () => {
     inquirer
@@ -45,5 +57,12 @@ startInit = () => {
         })
 }
 
-startInit()
 
+console.log(figlet.text('Employee Manager' , {
+    font: 'standard',
+} , function(err, data) {
+    if (err) throw err;
+    console.log(data)
+    console.log('\n')
+    startInit()
+}))

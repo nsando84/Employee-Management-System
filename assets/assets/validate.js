@@ -20,7 +20,7 @@ validateNum3 = (num) => {
     return validate || "insert valid number"
 }
 
-console.log(validateNum3(55))
+
 module.exports = {
     validateText: validateText,
     validateNum: validateNum,
