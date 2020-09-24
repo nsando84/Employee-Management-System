@@ -137,15 +137,12 @@ deleteRole = () => {
         ])
         .then(user => {
             let roleNum = resultArr.filter(e => e.includes(user.depRole))
-            // console.log(roleNum[0])
-
             const findRole = `SELECT employee.id As empId, roles.id FROM employee INNER JOIN 
             roles on employee.roles_id = roles.id INNER JOIN department on 
             roles.department_id = department.id LEFT JOIN employee m
             on employee.manager_id = m.id WHERE roles.id = ${roleNum[0][0]}`
 
             connection.query(findRole, (err, result) => {
-                // console.log(roleNum[0][2])
                 if (result.length > 0) {
                     console.log(`\x1b[31m Unable to remove ${roleNum[0][1]}. Employee(s) need reassignment.`)
                     delEmp()
@@ -164,7 +161,6 @@ deleteRole = () => {
                         if (!user.confirmDel) {
                                 deleteRole() 
                         } else {
-                           console.log(roleNum[0])
                             const managerCheck = `DELETE FROM roles WHERE id = "${roleNum[0][0]}";`
                             connection.query(managerCheck, (err, result) => {
                             if (err) throw err
@@ -190,7 +186,6 @@ deleteDept = () => {
         resultArr.sort().forEach(e => newArr.push(e[0]))
         newArr.push(new inquirer.Separator())
         newArr.push('\x1b[33m Go back')
-        console.log(resultArr)
     inquirer  
         .prompt([
             {
@@ -204,9 +199,7 @@ deleteDept = () => {
         ])
         .then(user => {
             let finalArr = resultArr.filter(e=> e[0] == user.dept)
-            console.log(finalArr[0][1])
             const checkTotalEmp = `SELECT roles.id FROM roles WHERE roles.department_id = "${finalArr[0][1]}"`
-            console.log(checkTotalEmp)
             connection.query(checkTotalEmp, (err, result) => {
                 if (err) throw err;
             if (result.length > 0) {

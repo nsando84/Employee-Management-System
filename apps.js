@@ -46,7 +46,7 @@ startInit = () => {
                     compBudg()
                     break;
                 default:
-                    console.log("exit......")
+                    console.log(`\x1b[35m Exit complete.`)
                     process.exit()             
             }
         })
