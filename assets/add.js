@@ -209,12 +209,13 @@ addRole = () => {
                                                 {
                                                     type: 'input',
                                                     message: 'Please enter in a manager number',
+                                                    validate: validateIt.validateNum3,
                                                     name: 'userNum'
                                                 }
                                             ])
                                             .then(userNum => {
-                                                if (newArr.some(e => parseFloat(e) == userNum.userNum) || userNum.userNum.length < 2 || isNaN(userNum.userNum)) {
-                                                    console.log('\x1b[31m Number already exists, too short, or not a number. Please start over.')
+                                                if (newArr.some(e => parseFloat(e) == userNum.userNum)) {
+                                                    console.log('\x1b[31m Manager number already exists. Please start over.')
                                                     addRole()
                                                 } else {
                                                     connection.query('INSERT INTO roles SET ?',

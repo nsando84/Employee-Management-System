@@ -14,8 +14,16 @@ validateNum = (num) => {
     return validate || "insert valid number"
 }
 
+validateNum3 = (num) => {
+    let validate = true
+    num > 99 && !isNaN(num)  ? "" : validate = false
+    return validate || "insert valid number"
+}
+
+console.log(validateNum3(55))
 module.exports = {
     validateText: validateText,
-    validateNum: validateNum
+    validateNum: validateNum,
+    validateNum3: validateNum3
 }
 

@@ -59,7 +59,7 @@ allEmployee = () => {
         const queryAll = `SELECT employee.first_name As First, employee.last_name As Last,
         roles.title As Title, roles.salary As Salary ,department.dept_name As Dept,
         CONCAT (m.first_name, " ", m.last_name) As Manager
-        FROM employee INNER JOIN roles on employee.roles_id = roles.id INNER JOIN department
+        FROM employee LEFT JOIN roles on employee.roles_id = roles.id LEFT JOIN department
         on roles.department_id = department.id LEFT JOIN employee m on employee.manager_id = m.id` 
     connection.query(queryAll, (err, result) => {
     if (err) throw err;

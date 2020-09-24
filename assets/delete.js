@@ -26,10 +26,10 @@ delEmp = () => {
                     deleteEmployee();
                 break;
                 case 'Delete Role':
-                    // addRole();   
+                    deleteRole();   
                 break;
                 case 'Delete Department':
-                    // addDept();
+                    deleteDept();
                 break;
             default:
                 startInit();
@@ -55,7 +55,6 @@ deleteEmployee = () => {
         resultArr.forEach(e => newArr.push(e[0]+ " - " + "Title: "+e[4]+ " - "+ "Dept: " +e[3]+ " - "+ "Current Manager: "+e[6]))
         newArr.push(new inquirer.Separator())
         newArr.push('\x1b[33m Go back')    
-        // console.log(newArr)
         inquirer
             .prompt([
                 {
@@ -67,6 +66,9 @@ deleteEmployee = () => {
                 }
             ])
             .then(user =>{
+                if (user.userPick == '\x1b[33m Go back') {
+                    delEmp()
+                } else {
                 let findRole = user.userPick.split("-")
                 let finalArr = resultArr.filter(e=> e[0].replace(/\s/g, '') == findRole[0].replace(/\s/g, ''))
                 inquirer
@@ -103,22 +105,88 @@ deleteEmployee = () => {
                             connection.query(`DELETE FROM employee WHERE employee.id = ${finalArr[0][1]}`,
                             (err, result) => {
                                 if (err) throw err;
-                                console.log('\x1b[35m Employee has been deleted.')
+                                console.log(`\x1b[35m ${finalArr[0][0]} has been deleted.`)
                                 startInit()
                             })
                             }
                     })
-
-
-
-            })
-
-
-
-})
-
+            }})
+    })
 }
 
 
+deleteRole = () => {
+    const queryCompRole = `SELECT roles.id, roles.title, roles.manager_id, roles.reports_to FROM roles`
+    connection.query(queryCompRole, (err, result) => {
+    if (err) throw err;
+    let resultArr = []
+    let newArr = []
+    result.forEach(e => resultArr.unshift(Object.values(e)))
+    resultArr.sort().forEach(e => newArr.push(e[1]))
+    newArr.push(new inquirer.Separator())
+    newArr.push('\x1b[33m Go back')    
+    inquirer
+        .prompt([ 
+            {
+            type: 'list',
+            message: 'Which role would you like to delete?',
+            name: 'depRole',
+            pageSize: 12,
+            choices: [...newArr]
+            }
+        ])
+        .then(user => {
+            let roleNum = resultArr.filter(e => e.includes(user.depRole))
+            // console.log(roleNum[0])
 
+            const findRole = `SELECT employee.id As empId, roles.id FROM employee INNER JOIN 
+            roles on employee.roles_id = roles.id INNER JOIN department on 
+            roles.department_id = department.id LEFT JOIN employee m
+            on employee.manager_id = m.id WHERE roles.id = ${roleNum[0][0]}`
+
+            connection.query(findRole, (err, result) => {
+                // console.log(roleNum[0][2])
+                if (result.length > 0) {
+                    console.log(`\x1b[31m Unable to delete ${roleNum[0][1]}. Employee(s) need reassignment.`)
+                    delEmp()
+                } else {
+
+                if (user.depRole == '\x1b[33m Go back') { delEmp() } else {
+                    inquirer
+                        .prompt([
+                            {
+                                type: 'confirm',
+                                message: `Are you sure you want to remove ${roleNum[0][1]}`,
+                                name: 'confirmDel'
+                            }
+                        ])
+                        .then(user => {
+                        if (!user.confirmDel) {
+                                deleteRole() 
+                        } else {
+                           console.log(roleNum[0])
+                            const managerCheck = `DELETE FROM roles WHERE id = "${roleNum[0][0]}";`
+                            connection.query(managerCheck, (err, result) => {
+                            if (err) throw err
+                            console.log(`\x1b[35m ${roleNum[0][1]} has been deleted.`)
+                            delEmp()
+                            })
+                         }
+                        })
+                }    
+            }
+            })
+       })
+    });   
+}
+
+deleteDept = () => {
+    
+
+
+
+
+
+
+}
 module.exports = delEmp
