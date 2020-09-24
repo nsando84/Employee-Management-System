@@ -53,6 +53,7 @@ startInit = () => {
                     break;  
                 case 'Company Budget':
                     compBudg()
+                    break;
                 default:
                     console.log("exit......")
                     process.exit()             
