@@ -136,6 +136,7 @@ deleteRole = () => {
             }
         ])
         .then(user => {
+            if (user.depRole == '\x1b[33m Go back') { delEmp() } else {
             let roleNum = resultArr.filter(e => e.includes(user.depRole))
             const findRole = `SELECT employee.id As empId, roles.id FROM employee INNER JOIN 
             roles on employee.roles_id = roles.id INNER JOIN department on 
@@ -148,7 +149,7 @@ deleteRole = () => {
                     delEmp()
                 } else {
 
-                if (user.depRole == '\x1b[33m Go back') { delEmp() } else {
+                
                     inquirer
                         .prompt([
                             {
@@ -169,9 +170,10 @@ deleteRole = () => {
                             })
                          }
                         })
-                }    
+                    
             }
-            })
+              })
+            }
        })
     });   
 }

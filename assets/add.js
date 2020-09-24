@@ -95,6 +95,7 @@ addEmployee = () => {
                     result.forEach(e => resultArr.push(e))
                     let newArr = []
                     resultArr.forEach(e => newArr.push(e.Manager))
+                    newArr.push('\x1b[33m Go back')
                     inquirer
                     .prompt([ 
                         {   
@@ -105,6 +106,12 @@ addEmployee = () => {
                         }
                     ])
                     .then(user => {
+                        if (user.manager == '\x1b[33m Go back' && newArr.length == 1) { 
+                            console.log('\x1b[31m Employee needs manager. Please assign a manager.')
+                            addOpt()
+                        } else if (user.manager == '\x1b[33m Go back'){
+                            addOpt() 
+                        } else {
                         let manId = resultArr.find(e => e.Manager == user.manager)
                         connection.query('INSERT INTO employee SET ?',
                             {
@@ -117,7 +124,9 @@ addEmployee = () => {
                                 console.log("\x1b[35m Employee created")
                                 startInit()
                         })
+                    }
                     })
+                
                 })
             } else {
                 connection.query('INSERT INTO employee SET ?',
@@ -208,7 +217,7 @@ addRole = () => {
                                             .prompt([
                                                 {
                                                     type: 'input',
-                                                    message: 'Please enter in a manager number',
+                                                    message: 'Please enter in a management ID number',
                                                     validate: validateIt.validateNum3,
                                                     name: 'userNum'
                                                 }
@@ -245,6 +254,7 @@ addRole = () => {
                                     let newArr = []
                                     result.forEach(e => resultArr.unshift(Object.values(e)))
                                     resultArr.sort().forEach(e => newArr.push(e[0]))
+                                    newArr.push('\x1b[33m Go back')
                                     inquirer
                                         .prompt([
                                             {   
@@ -255,6 +265,12 @@ addRole = () => {
                                             }
                                         ])
                                         .then(userSupp => {
+                                            if (userSupp.userSupp == '\x1b[33m Go back' && newArr.length == 1) { 
+                                                console.log('\x1b[31m Role needs managerment. Please assign a managerment role.')
+                                                addOpt()
+                                            } else if (userSupp.userSupp == '\x1b[33m Go back'){
+                                                addOpt() 
+                                            } else {
                                             let superNum = []
                                             resultArr.forEach(e => e[0] == userSupp.userSupp ? superNum.push(e[1]) : " ")
                                             connection.query('INSERT INTO roles SET ?',
@@ -268,7 +284,8 @@ addRole = () => {
                                                         if (err) throw err
                                                         console.log("\x1b[35m Role created")
                                                         startInit()
-                                                    })  
+                                                    }) 
+                                            } 
                                         })
                                 })
                             }
@@ -307,7 +324,7 @@ addDept = () => {
                     dept_name: newDept.newDept
                 }, (err) => {
                 if (err) throw err
-                console.log("role created")
+                console.log("\x1b[35m Department created")
                 startInit()
             })  
             }

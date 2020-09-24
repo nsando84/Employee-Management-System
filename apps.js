@@ -52,11 +52,11 @@ startInit = () => {
         })
 }
 
-console.log(figlet.text('Employee Manager' , {
+figlet.text('Employee Manager' , {
     font: 'standard',
 } , function(err, data) {
     if (err) throw err;
     console.log(data)
     console.log('\n')
     startInit()
-}))
+})
