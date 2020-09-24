@@ -13,18 +13,19 @@
 
   
 
-  ### The task was to created a CLI that was connected to mySQL that could handle Employee Management Operations. 
+  ### The task was to create a CLI that was connected to a mySQL database that could handle Employee Management Operations. 
 
  #### Video of CLI in action! ----> [***here***](https://drive.google.com/file/d/19_CLpc4l_5hZ3DlgX91NXfAMzCssDD8B/view)
  
 
  
   ### Features in this CLI application:
-  - User has many options to view their employees by: department, roles, management positions, non-management positions. 
-  - User can modify employees roles and management through interface.
+  - User has many options to view their employees: department, roles, management positions, non-management positions. 
+  - User can modify employee roles and management roles through interface.
   - User can create new roles, management roles, and departments.
   - User can remove employees, roles, and departments.
   - User can view budget for all departments, or per department.
+  - Uses mySQL database to store information.
 
  
 ---
