@@ -3,7 +3,7 @@
 
   # **Quick Note**   ![Github All Releases](https://img.shields.io/github/contributors/nsando84/Employee-Management-System)   
 
-![Screen Shot 2020-09-24 at 12 07 13 PM](https://user-images.githubusercontent.com/67135603/94190730-5d5ed400-fe61-11ea-8854-2b726c901d61.png)
+![ss2](https://user-images.githubusercontent.com/67135603/94204362-f697e580-fe75-11ea-8bef-95d6b9199660.png)
 
 
 
