@@ -3,7 +3,8 @@
 
   # **Quick Note**   ![Github All Releases](https://img.shields.io/github/contributors/nsando84/Employee-Management-System)   
 
-![Screen Shot 2020-09-15 at 9 32 14 PM](https://user-images.githubusercontent.com/67135603/93292720-09862800-f79b-11ea-9307-a6db465ad2a7.png)
+![Screen Shot 2020-09-24 at 12 07 13 PM](https://user-images.githubusercontent.com/67135603/94190730-5d5ed400-fe61-11ea-8854-2b726c901d61.png)
+
 
 
 
@@ -14,18 +15,18 @@
 
   
 
-  ### I was tasked with creating an API application that would successfuly fulfill any CRUD operations that the user may have. 
+  ### The task was to created a CLI that was connected to mySQL that could handle Employee Management Operations. 
 
- #### Heroku deployed application ----> [***here***](https://hidden-lowlands-59388.herokuapp.com/)
+ #### Video of CLI in action! ----> [***here***](https://drive.google.com/file/d/19_CLpc4l_5hZ3DlgX91NXfAMzCssDD8B/view)
  
- #### Heroku Quick Notes API ----> [***here***](https://hidden-lowlands-59388.herokuapp.com/api/notes)
- 
-  ### Features in the applications:
-  - This is a API note saving application. 
-  - User can create, read, update or delete data entered. (CRUD)
-  - Mobile responsive design.
-  - User can access the API data inside and outside the application.
 
+ 
+  ### Features in this CLI application:
+  - User has many options to view their employees by: department, roles, management positions, non-management positions. 
+  - User can modify employees roles and management through interface.
+  - User can create new roles, management roles, and departments.
+  - User can remove employees, roles, and departments.
+  - User can view budget by entire company, or by department.
 
  
 ---
@@ -44,16 +45,18 @@
 
 ### **Installation**
 
-    npm install node
-    npm install express
+    npm install mysql
+    npm install inquirer
+    npm install figlet
+    npm install dotenv
 
 ---
 
 ### **Usage**
 
-#### This application is used to keep track of notes and saves as JSON.
+#### This application is for employers to track employees, roles, and departments.
 
-![Screen Shot 2020-09-15 at 6 12 35 PM](https://user-images.githubusercontent.com/67135603/93280699-16951e00-f77f-11ea-8765-9686076ac35d.png)
+
 
 
 
@@ -67,7 +70,7 @@
 
 ### **Tests**
 
-#### Tested through POSTMAN
+### N/A
 
 ---
 
