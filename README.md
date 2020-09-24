@@ -15,7 +15,7 @@
 
   ### The task was to create a CLI that was connected to a mySQL database that could handle Employee Management Operations. 
 
- #### Video of CLI in action! ----> [***here***](https://drive.google.com/file/d/19_CLpc4l_5hZ3DlgX91NXfAMzCssDD8B/view)
+ #### Video of CLI in action ----> [***here***](https://drive.google.com/file/d/19_CLpc4l_5hZ3DlgX91NXfAMzCssDD8B/view)
  
 
  
