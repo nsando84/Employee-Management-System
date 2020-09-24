@@ -5,7 +5,7 @@ const addOpt = require('./assets/add')
 const updateOpt = require('./assets/update')
 const delEmp = require('./assets/delete')
 const figlet = require('figlet')
-
+const compBudg = require('./assets/budget')
 
 
    
@@ -31,6 +31,7 @@ startInit = () => {
                     'Add Menu',
                     'Update Employee',
                     'Delete Menu',
+                    'Company Budget',
                     new inquirer.Separator(),
                     '\x1b[33m Exit'
                 ]
@@ -50,6 +51,8 @@ startInit = () => {
                 case 'Delete Menu':
                     delEmp()
                     break;  
+                case 'Company Budget':
+                    compBudg()
                 default:
                     console.log("exit......")
                     process.exit()             
