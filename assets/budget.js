@@ -81,7 +81,7 @@ budgetByDept = () => {
                 if (err) throw err;
                     let total = []
                     total.push(Object.entries(result[0]))
-                    console.log(`\x1b[35m Utilized budget for all departments: $` +Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total[0][0][1]))
+                    console.log(`\x1b[35m Utilized budget for ${finalArr[0][0]} $` +Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total[0][0][1]))
                     compBudg()
             })
         })

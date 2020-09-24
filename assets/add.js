@@ -99,7 +99,7 @@ addEmployee = () => {
                     .prompt([ 
                         {   
                             type: 'list',
-                            message: 'pick employee manager',
+                            message: 'Pick employee manager',
                             name: "manager",
                             choices: [...newArr]
                         }

@@ -8,15 +8,6 @@ const figlet = require('figlet')
 const compBudg = require('./assets/budget')
 
 
-   
-    
-    
-   
-
-
-
-
-
 startInit = () => {
     inquirer
         .prompt([
@@ -30,7 +21,7 @@ startInit = () => {
                     'View Menu',
                     'Add Menu',
                     'Update Employee',
-                    'Delete Menu',
+                    'Remove Menu',
                     'Company Budget',
                     new inquirer.Separator(),
                     '\x1b[33m Exit'
@@ -48,7 +39,7 @@ startInit = () => {
                 case 'Update Employee':
                     updateOpt()
                     break;
-                case 'Delete Menu':
+                case 'Remove Menu':
                     delEmp()
                     break;  
                 case 'Company Budget':
@@ -60,7 +51,6 @@ startInit = () => {
             }
         })
 }
-
 
 console.log(figlet.text('Employee Manager' , {
     font: 'standard',

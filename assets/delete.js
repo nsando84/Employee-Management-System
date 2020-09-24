@@ -12,9 +12,9 @@ delEmp = () => {
                 name: 'add',
                 choices: [
                     new inquirer.Separator(),
-                    'Delete Employee',
-                    'Delete Role',
-                    'Delete Department',
+                    'Remove Employee',
+                    'Remove Role',
+                    'Remove Department',
                     new inquirer.Separator(),
                     '\x1b[33m Go back'
                 ]
@@ -22,13 +22,13 @@ delEmp = () => {
         ])
         .then(user =>{
             switch (user.add) {
-                case 'Delete Employee':
+                case 'Remove Employee':
                     deleteEmployee();
                 break;
-                case 'Delete Role':
+                case 'Remove Role':
                     deleteRole();   
                 break;
-                case 'Delete Department':
+                case 'Remove Department':
                     deleteDept();
                 break;
             default:
@@ -75,7 +75,7 @@ deleteEmployee = () => {
                     .prompt([
                         {
                             type: 'confirm',
-                            message: `Are you sure you want to remove ${finalArr[0][0]}`,
+                            message: `Are you sure you want to remove ${finalArr[0][0]}?`,
                             name: 'confirmDel'
                         }
                     ])
@@ -98,14 +98,14 @@ deleteEmployee = () => {
                                  (err, result) => {
                                     if (err) throw err;
                                 })
-                                console.log("\x1b[35m Employee has been deleted. Manager's employees have been dropped, please reassign.")
+                                console.log("\x1b[35m Employee has been removed. Manager's employees have been dropped, please reassign.")
                                 startInit()
                             })
                         } else {
                             connection.query(`DELETE FROM employee WHERE employee.id = ${finalArr[0][1]}`,
                             (err, result) => {
                                 if (err) throw err;
-                                console.log(`\x1b[35m ${finalArr[0][0]} has been deleted.`)
+                                console.log(`\x1b[35m ${finalArr[0][0]} has been removed.`)
                                 startInit()
                             })
                             }
@@ -129,7 +129,7 @@ deleteRole = () => {
         .prompt([ 
             {
             type: 'list',
-            message: 'Which role would you like to delete?',
+            message: 'Which role would you like to remove?',
             name: 'depRole',
             pageSize: 12,
             choices: [...newArr]
@@ -147,7 +147,7 @@ deleteRole = () => {
             connection.query(findRole, (err, result) => {
                 // console.log(roleNum[0][2])
                 if (result.length > 0) {
-                    console.log(`\x1b[31m Unable to delete ${roleNum[0][1]}. Employee(s) need reassignment.`)
+                    console.log(`\x1b[31m Unable to remove ${roleNum[0][1]}. Employee(s) need reassignment.`)
                     delEmp()
                 } else {
 
@@ -168,7 +168,7 @@ deleteRole = () => {
                             const managerCheck = `DELETE FROM roles WHERE id = "${roleNum[0][0]}";`
                             connection.query(managerCheck, (err, result) => {
                             if (err) throw err
-                            console.log(`\x1b[35m ${roleNum[0][1]} has been deleted.`)
+                            console.log(`\x1b[35m ${roleNum[0][1]} has been removed.`)
                             delEmp()
                             })
                          }
@@ -210,7 +210,7 @@ deleteDept = () => {
             connection.query(checkTotalEmp, (err, result) => {
                 if (err) throw err;
             if (result.length > 0) {
-                console.log(`\x1b[31m Unable to delete ${finalArr[0][0]}. Role(s) need reassignment.`)
+                console.log(`\x1b[31m Unable to remove ${finalArr[0][0]}. Role(s) need reassignment.`)
                     delEmp()
             } else {
                 inquirer
@@ -228,7 +228,7 @@ deleteDept = () => {
                             const managerCheck = `DELETE FROM department WHERE id = "${finalArr[0][1]}";`
                             connection.query(managerCheck, (err, result) => {
                             if (err) throw err
-                            console.log(`\x1b[35m ${finalArr[0][0]} has been deleted.`)
+                            console.log(`\x1b[35m ${finalArr[0][0]} has been removed.`)
                             delEmp()
                             })
                          }
