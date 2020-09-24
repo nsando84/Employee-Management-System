@@ -1,5 +1,3 @@
-# Employee Manager Application
-
 
   # **Employee Manager Application**   ![Github All Releases](https://img.shields.io/github/contributors/nsando84/Employee-Management-System)   
 
