@@ -26,7 +26,7 @@
   - User can modify employees roles and management through interface.
   - User can create new roles, management roles, and departments.
   - User can remove employees, roles, and departments.
-  - User can view budget by entire company, or by department.
+  - User can view budget for all departments, or per department.
 
  
 ---
